@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Geopost Energy Prova</title>
+    </head>
+    <body>
+        <h1>Gerar os grupos</h1>
+
+        <button onclick="chooseGroup()">Gerar</button>
+
+        <table> 
+            <tr>
+                <th>Grupo A</th>
+                <th>Grupo B</th>
+                <th>Grupo C</th>
+                <th>Grupo D</th>
+                <th>Grupo E</th>
+                <th>Grupo F</th>
+                <th>Grupo G</th>
+                <th>Grupo H</th>
+            </tr>
+            
+        </table>
+        <script>
+            const URL_FETCH = 'https://estagio.geopostenergy.com/WorldCup/GetAllTeams';
+
+            var teams = [];
+            var groups = {A:{},B:{},C:{},D:{},E:{},F:{},H:{}};
+
+            fetch(URL_FETCH,{method: 'get',headers: new Headers({'git-user':'brunodf05'})})
+            .then(function(response){
+                response.json().then(function(data){
+                    console.log(data);
+                    for (var key in data.Result){
+                        teams.push(data.Result[key]);
+                    }
+                    console.log(teams);
+                })
+            });
+
+            function chooseGroup(){
+                var done = [];
+                for (var i=0; i <teams.length; i++){
+                    done.push(i);
+                }
+                for (var key in groups){
+                    for (var i=0; i<4; i++){
+                        var randomIndex = Math.floor(Math.random() * done.length);
+                        groups[key].push(teams[randomIndex]);
+                        done.splice(randomIndex, 1);
+                    }
+                }
+                
+            }
+
+        </script>        
+    </body>
+</html>
