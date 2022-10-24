@@ -10,6 +10,7 @@
 
         <p id="grupos"></p>
 
+        <h2>Gerar as partidas</h2>
         <button onclick="gerarPartidas()">Gerar partidas</button>
         <p id="partidas"></p>
 
@@ -90,17 +91,17 @@
                 let time2 = aux[1];
                 let time3 = aux[2];
                 let time4 = aux[3];
-
+                
                 if(x1>x2){
                     criterios.find((c,i) => {
-                        if (c.name===time1){
+                        if (c.Name===time1){
                             criterios[i].Pontos+=3;
                             criterios[i].Saldo+=x1;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time2){
+                        if (c.Name===time2){
                             criterios[i].Saldo+=x2;
                             return true;
                         }
@@ -108,14 +109,14 @@
                 } 
                 else if (x1=x2) {
                     criterios.find((c,i) => {
-                        if (c.name===time1){
+                        if (c.Name===time1){
                             criterios[i].Pontos+=1;
                             criterios[i].Saldo+=x1;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time2){
+                        if (c.Name===time2){
                             criterios[i].Pontos+=1;
                             criterios[i].Saldo+=x2;
                             return true;
@@ -124,13 +125,13 @@
                 } 
                 else {
                     criterios.find((c,i) => {
-                        if (c.name===time1){
+                        if (c.Name===time1){
                             criterios[i].Saldo+=x1;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time2){
+                        if (c.Name===time2){
                             criterios[i].Pontos+=3;
                             criterios[i].Saldo+=x2;
                             return true;
@@ -139,14 +140,14 @@
                 }
                 if(x3>x4){
                     criterios.find((c,i) => {
-                        if (c.name===time3){
+                        if (c.Name===time3){
                             criterios[i].Pontos+=3;
                             criterios[i].Saldo+=x3;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time4){
+                        if (c.Name===time4){
                             criterios[i].Saldo+=x4;
                             return true;
                         }
@@ -154,14 +155,14 @@
                 } 
                 else if (x3=x4) {
                     criterios.find((c,i) => {
-                        if (c.name===time3){
+                        if (c.Name===time3){
                             criterios[i].Pontos+=1;
                             criterios[i].Saldo+=x3;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time4){
+                        if (c.Name===time4){
                             criterios[i].Pontos+=1;
                             criterios[i].Saldo+=x4;
                             return true;
@@ -170,13 +171,13 @@
                 } 
                 else {
                     criterios.find((c,i) => {
-                        if (c.name===time3){
+                        if (c.Name===time3){
                             criterios[i].Saldo+=x3;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time4){
+                        if (c.Name===time4){
                             criterios[i].Pontos+=3;
                             criterios[i].Saldo+=x4;
                             return true;
@@ -185,14 +186,14 @@
                 }
                 if(y1>y2){
                     criterios.find((c,i) => {
-                        if (c.name===time1){
+                        if (c.Name===time1){
                             criterios[i].Pontos+=3;
                             criterios[i].Saldo+=y1;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time3){
+                        if (c.Name===time3){
                             criterios[i].Saldo+=y2;
                             return true;
                         }
@@ -200,14 +201,14 @@
                 } 
                 else if (y1=y2) {
                     criterios.find((c,i) => {
-                        if (c.name===time1){
+                        if (c.Name===time1){
                             criterios[i].Pontos+=1;
                             criterios[i].Saldo+=y1;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time3){
+                        if (c.Name===time3){
                             criterios[i].Pontos+=1;
                             criterios[i].Saldo+=y2;
                             return true;
@@ -216,13 +217,13 @@
                 } 
                 else {
                     criterios.find((c,i) => {
-                        if (c.name===time1){
+                        if (c.Name===time1){
                             criterios[i].Saldo+=y1;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time3){
+                        if (c.Name===time3){
                             criterios[i].Pontos+=3;
                             criterios[i].Saldo+=y2;
                             return true;
@@ -231,14 +232,14 @@
                 }
                 if(y3>y4){
                     criterios.find((c,i) => {
-                        if (c.name===time2){
+                        if (c.Name===time2){
                             criterios[i].Pontos+=3;
                             criterios[i].Saldo+=y3;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time4){
+                        if (c.Name===time4){
                             criterios[i].Saldo+=y4;
                             return true;
                         }
@@ -246,14 +247,14 @@
                 } 
                 else if (y3=y4) {
                     criterios.find((c,i) => {
-                        if (c.name===time2){
+                        if (c.Name===time2){
                             criterios[i].Pontos+=1;
                             criterios[i].Saldo+=y3;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time4){
+                        if (c.Name===time4){
                             criterios[i].Pontos+=1;
                             criterios[i].Saldo+=y4;
                             return true;
@@ -262,13 +263,13 @@
                 } 
                 else {
                     criterios.find((c,i) => {
-                        if (c.name===time2){
+                        if (c.Name===time2){
                             criterios[i].Saldo+=y3;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time4){
+                        if (c.Name===time4){
                             criterios[i].Pontos+=3;
                             criterios[i].Saldo+=y4;
                             return true;
@@ -277,14 +278,14 @@
                 }
                 if(z1>z2){
                     criterios.find((c,i) => {
-                        if (c.name===time1){
+                        if (c.Name===time1){
                             criterios[i].Pontos+=3;
                             criterios[i].Saldo+=z1;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time4){
+                        if (c.Name===time4){
                             criterios[i].Saldo+=z2;
                             return true;
                         }
@@ -292,14 +293,14 @@
                 } 
                 else if (z1=z2) {
                     criterios.find((c,i) => {
-                        if (c.name===time1){
+                        if (c.Name===time1){
                             criterios[i].Pontos+=1;
                             criterios[i].Saldo+=z1;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time4){
+                        if (c.Name===time4){
                             criterios[i].Pontos+=1;
                             criterios[i].Saldo+=z2;
                             return true;
@@ -308,13 +309,13 @@
                 } 
                 else {
                     criterios.find((c,i) => {
-                        if (c.name===time1){
+                        if (c.Name===time1){
                             criterios[i].Saldo+=z1;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time4){
+                        if (c.Name===time4){
                             criterios[i].Pontos+=3;
                             criterios[i].Saldo+=z2;
                             return true;
@@ -323,14 +324,14 @@
                 }
                 if(z3>z4){
                     criterios.find((c,i) => {
-                        if (c.name===time2){
+                        if (c.Name===time2){
                             criterios[i].Pontos+=3;
                             criterios[i].Saldo+=z3;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time3){
+                        if (c.Name===time3){
                             criterios[i].Saldo+=z4;
                             return true;
                         }
@@ -338,14 +339,14 @@
                 } 
                 else if (z3=z4) {
                     criterios.find((c,i) => {
-                        if (c.name===time2){
+                        if (c.Name===time2){
                             criterios[i].Pontos+=1;
                             criterios[i].Saldo+=z3;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time3){
+                        if (c.Name===time3){
                             criterios[i].Pontos+=1;
                             criterios[i].Saldo+=z4;
                             return true;
@@ -354,13 +355,13 @@
                 } 
                 else {
                     criterios.find((c,i) => {
-                        if (c.name===time2){
+                        if (c.Name===time2){
                             criterios[i].Saldo+=z3;
                             return true;
                         }
                     });
                     criterios.find((c,i) => {
-                        if (c.name===time3){
+                        if (c.Name===time3){
                             criterios[i].Pontos+=3;
                             criterios[i].Saldo+=z4;
                             return true;
@@ -409,7 +410,7 @@
 
                 }
                 text+="</table>";
-
+                console.log("CRITERIOS",criterios);
                 document.getElementById("partidas").innerHTML = text;
 
             }
