@@ -6,15 +6,19 @@
     <body>
         <h1>Gerar os grupos</h1>
 
-        <button onclick="chooseGroup()">Gerar</button>
+        <button onclick="chooseGroup()">Gerar grupos</button>
 
         <p id="grupos"></p>
+
+        <button onclick="gerarPartidas()">Gerar partidas</button>
+        <p id="partidas"></p>
 
         <script>
             const URL_FETCH = 'https://estagio.geopostenergy.com/WorldCup/GetAllTeams';
 
             var teams = new Array();
             const groups = {A:[],B:[],C:[],D:[],E:[],F:[],G:[],H:[]};
+            var criterios = new Array();
 
             fetch(URL_FETCH,{method: 'get',headers: new Headers({'git-user':'brunodf05'})})
             .then(function(response){
@@ -38,7 +42,7 @@
                     a[rand] = temp;
                 }
                 console.log("CONSOLE A",a);
-                //return a;
+                
             }
 
             function chooseGroup(){
@@ -54,20 +58,7 @@
                     }
                     y=0;
                 }
-                /*var done = [];
-                for (var i=0; i <teams.length; i++){
-                    done.push(i);
-                }
-                console.log(done);
-                for (var key in groups){
-                    for (var i=0; i<4; i++){
-                        var randomIndex = Math.floor(Math.random() * done.length);
-                        groups[key].push(teams[randomIndex].Name);
-                        done.splice(randomIndex, 1);
-                        //console.log(done);
-                    }
-                }
-                */
+                
                 let text = "<table border='1'><tr><th>Grupo A</th><th>Grupo B</th><th>Grupo C</th><th>Grupo D</th><th>Grupo E</th><th>Grupo F</th><th>Grupo G</th><th>Grupo H</th></tr>";
                 console.log(groups);
                 let count = 0;
@@ -75,14 +66,11 @@
 
                 for (var n=0;n<4;n++) {
                     for (var key in groups) {
-                        console.log("KEY",key);
                         if (count<8){
                             if (count==0){
                                 text+="<tr>";
                             }
                             let aux = groups[key];
-                            console.log('AUX', aux);
-                            console.log('COUNT', count);
                             text+="<td>" + aux[n] + "</td>";
                             count++;
                         }
@@ -97,6 +85,334 @@
                 document.getElementById("grupos").innerHTML = text;
             }
 
+            function fillCriterios(aux,x1,x2,x3,x4,y1,y2,y3,y4,z1,z2,z3,z4){
+                let time1 = aux[0];
+                let time2 = aux[1];
+                let time3 = aux[2];
+                let time4 = aux[3];
+
+                if(x1>x2){
+                    criterios.find((c,i) => {
+                        if (c.name===time1){
+                            criterios[i].Pontos+=3;
+                            criterios[i].Saldo+=x1;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time2){
+                            criterios[i].Saldo+=x2;
+                            return true;
+                        }
+                    });
+                } 
+                else if (x1=x2) {
+                    criterios.find((c,i) => {
+                        if (c.name===time1){
+                            criterios[i].Pontos+=1;
+                            criterios[i].Saldo+=x1;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time2){
+                            criterios[i].Pontos+=1;
+                            criterios[i].Saldo+=x2;
+                            return true;
+                        }
+                    });
+                } 
+                else {
+                    criterios.find((c,i) => {
+                        if (c.name===time1){
+                            criterios[i].Saldo+=x1;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time2){
+                            criterios[i].Pontos+=3;
+                            criterios[i].Saldo+=x2;
+                            return true;
+                        }
+                    });
+                }
+                if(x3>x4){
+                    criterios.find((c,i) => {
+                        if (c.name===time3){
+                            criterios[i].Pontos+=3;
+                            criterios[i].Saldo+=x3;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time4){
+                            criterios[i].Saldo+=x4;
+                            return true;
+                        }
+                    });
+                } 
+                else if (x3=x4) {
+                    criterios.find((c,i) => {
+                        if (c.name===time3){
+                            criterios[i].Pontos+=1;
+                            criterios[i].Saldo+=x3;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time4){
+                            criterios[i].Pontos+=1;
+                            criterios[i].Saldo+=x4;
+                            return true;
+                        }
+                    });
+                } 
+                else {
+                    criterios.find((c,i) => {
+                        if (c.name===time3){
+                            criterios[i].Saldo+=x3;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time4){
+                            criterios[i].Pontos+=3;
+                            criterios[i].Saldo+=x4;
+                            return true;
+                        }
+                    });
+                }
+                if(y1>y2){
+                    criterios.find((c,i) => {
+                        if (c.name===time1){
+                            criterios[i].Pontos+=3;
+                            criterios[i].Saldo+=y1;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time3){
+                            criterios[i].Saldo+=y2;
+                            return true;
+                        }
+                    });
+                } 
+                else if (y1=y2) {
+                    criterios.find((c,i) => {
+                        if (c.name===time1){
+                            criterios[i].Pontos+=1;
+                            criterios[i].Saldo+=y1;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time3){
+                            criterios[i].Pontos+=1;
+                            criterios[i].Saldo+=y2;
+                            return true;
+                        }
+                    });
+                } 
+                else {
+                    criterios.find((c,i) => {
+                        if (c.name===time1){
+                            criterios[i].Saldo+=y1;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time3){
+                            criterios[i].Pontos+=3;
+                            criterios[i].Saldo+=y2;
+                            return true;
+                        }
+                    });
+                }
+                if(y3>y4){
+                    criterios.find((c,i) => {
+                        if (c.name===time2){
+                            criterios[i].Pontos+=3;
+                            criterios[i].Saldo+=y3;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time4){
+                            criterios[i].Saldo+=y4;
+                            return true;
+                        }
+                    });
+                } 
+                else if (y3=y4) {
+                    criterios.find((c,i) => {
+                        if (c.name===time2){
+                            criterios[i].Pontos+=1;
+                            criterios[i].Saldo+=y3;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time4){
+                            criterios[i].Pontos+=1;
+                            criterios[i].Saldo+=y4;
+                            return true;
+                        }
+                    });
+                } 
+                else {
+                    criterios.find((c,i) => {
+                        if (c.name===time2){
+                            criterios[i].Saldo+=y3;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time4){
+                            criterios[i].Pontos+=3;
+                            criterios[i].Saldo+=y4;
+                            return true;
+                        }
+                    });
+                }
+                if(z1>z2){
+                    criterios.find((c,i) => {
+                        if (c.name===time1){
+                            criterios[i].Pontos+=3;
+                            criterios[i].Saldo+=z1;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time4){
+                            criterios[i].Saldo+=z2;
+                            return true;
+                        }
+                    });
+                } 
+                else if (z1=z2) {
+                    criterios.find((c,i) => {
+                        if (c.name===time1){
+                            criterios[i].Pontos+=1;
+                            criterios[i].Saldo+=z1;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time4){
+                            criterios[i].Pontos+=1;
+                            criterios[i].Saldo+=z2;
+                            return true;
+                        }
+                    });
+                } 
+                else {
+                    criterios.find((c,i) => {
+                        if (c.name===time1){
+                            criterios[i].Saldo+=z1;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time4){
+                            criterios[i].Pontos+=3;
+                            criterios[i].Saldo+=z2;
+                            return true;
+                        }
+                    });
+                }
+                if(z3>z4){
+                    criterios.find((c,i) => {
+                        if (c.name===time2){
+                            criterios[i].Pontos+=3;
+                            criterios[i].Saldo+=z3;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time3){
+                            criterios[i].Saldo+=z4;
+                            return true;
+                        }
+                    });
+                } 
+                else if (z3=z4) {
+                    criterios.find((c,i) => {
+                        if (c.name===time2){
+                            criterios[i].Pontos+=1;
+                            criterios[i].Saldo+=z3;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time3){
+                            criterios[i].Pontos+=1;
+                            criterios[i].Saldo+=z4;
+                            return true;
+                        }
+                    });
+                } 
+                else {
+                    criterios.find((c,i) => {
+                        if (c.name===time2){
+                            criterios[i].Saldo+=z3;
+                            return true;
+                        }
+                    });
+                    criterios.find((c,i) => {
+                        if (c.name===time3){
+                            criterios[i].Pontos+=3;
+                            criterios[i].Saldo+=z4;
+                            return true;
+                        }
+                    });
+                }
+                
+            }
+
+            function gerarPartidas(){
+                for (var i=0; i<teams.length;i++){
+                    criterios.push({
+                        "Name": teams[i].Name,
+                        "Pontos": 0,
+                        "Saldo": 0,
+                    });
+                }
+               
+                let text = '<table border="1" style="width:100%">';
+                for(var key in groups){
+                    text += '<tr><th>Partidas Grupo '+key+"</th>";
+                    let x1=Math.floor(Math.random()*4),
+                    x2=Math.floor(Math.random()*4),
+                    x3=Math.floor(Math.random()*4),
+                    x4=Math.floor(Math.random()*4),
+                    y1=Math.floor(Math.random()*4),
+                    y2=Math.floor(Math.random()*4),
+                    y3=Math.floor(Math.random()*4),
+                    y4=Math.floor(Math.random()*4),
+                    z1=Math.floor(Math.random()*4),
+                    z2=Math.floor(Math.random()*4),
+                    z3=Math.floor(Math.random()*4),
+                    z4=Math.floor(Math.random()*4);
+
+                    let aux = groups[key];
+                    text+="<td>"+aux[0]+" "+x1+" x "+x2+" "+aux[1]+"</td>";
+                    text+="<td>"+aux[2]+" "+x3+" x "+x4+" "+aux[3]+"</td>";
+                    text+="<td>"+aux[0]+" "+y1+" x "+y2+" "+aux[2]+"</td>";
+                    text+="<td>"+aux[1]+" "+y3+" x "+y4+" "+aux[3]+"</td>";
+                    text+="<td>"+aux[0]+" "+z1+" x "+z2+" "+aux[3]+"</td>";
+                    text+="<td>"+aux[1]+" "+z3+" x "+z4+" "+aux[2]+"</td>";
+
+                    fillCriterios(aux,x1,x2,x3,x4,y1,y2,y3,y4,z1,z2,z3,z4)
+                    
+                    
+
+                }
+                text+="</table>";
+
+                document.getElementById("partidas").innerHTML = text;
+
+            }
         </script>        
     </body>
 </html>
