@@ -8,24 +8,13 @@
 
         <button onclick="chooseGroup()">Gerar</button>
 
-        <table> 
-            <tr>
-                <th>Grupo A</th>
-                <th>Grupo B</th>
-                <th>Grupo C</th>
-                <th>Grupo D</th>
-                <th>Grupo E</th>
-                <th>Grupo F</th>
-                <th>Grupo G</th>
-                <th>Grupo H</th>
-            </tr>
-            
-        </table>
+        <p id="grupos"></p>
+
         <script>
             const URL_FETCH = 'https://estagio.geopostenergy.com/WorldCup/GetAllTeams';
 
-            var teams = [];
-            var groups = {A:{},B:{},C:{},D:{},E:{},F:{},H:{}};
+            var teams = new Array();
+            const groups = {A:[],B:[],C:[],D:[],E:[],F:[],G:[],H:[]};
 
             fetch(URL_FETCH,{method: 'get',headers: new Headers({'git-user':'brunodf05'})})
             .then(function(response){
@@ -38,19 +27,74 @@
                 })
             });
 
+            function shuffle(a){
+                var rand,count,temp;
+                count = a.length;
+                while(count!=0){
+                    rand = Math.floor(Math.random() * count);
+                    count--;
+                    temp = a[count];
+                    a[count] = a[rand];
+                    a[rand] = temp;
+                }
+                console.log("CONSOLE A",a);
+                //return a;
+            }
+
             function chooseGroup(){
-                var done = [];
+                shuffle(teams);
+                
+                let y = 0; 
+                let i=0;
+                for (var key in groups){
+                    while (y<4){
+                        groups[key].push(teams[i].Name);
+                        y++;
+                        i++;
+                    }
+                    y=0;
+                }
+                /*var done = [];
                 for (var i=0; i <teams.length; i++){
                     done.push(i);
                 }
+                console.log(done);
                 for (var key in groups){
                     for (var i=0; i<4; i++){
                         var randomIndex = Math.floor(Math.random() * done.length);
-                        groups[key].push(teams[randomIndex]);
+                        groups[key].push(teams[randomIndex].Name);
                         done.splice(randomIndex, 1);
+                        //console.log(done);
+                    }
+                }
+                */
+                let text = "<table border='1'><tr><th>Grupo A</th><th>Grupo B</th><th>Grupo C</th><th>Grupo D</th><th>Grupo E</th><th>Grupo F</th><th>Grupo G</th><th>Grupo H</th></tr>";
+                console.log(groups);
+                let count = 0;
+                let init = groups;
+
+                for (var n=0;n<4;n++) {
+                    for (var key in groups) {
+                        console.log("KEY",key);
+                        if (count<8){
+                            if (count==0){
+                                text+="<tr>";
+                            }
+                            let aux = groups[key];
+                            console.log('AUX', aux);
+                            console.log('COUNT', count);
+                            text+="<td>" + aux[n] + "</td>";
+                            count++;
+                        }
+                        if (count==8) {
+                            text+="</tr>";
+                            count = 0;
+                        }
                     }
                 }
                 
+                text+="</table>";
+                document.getElementById("grupos").innerHTML = text;
             }
 
         </script>        
