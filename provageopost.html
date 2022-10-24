@@ -14,11 +14,17 @@
         <button onclick="gerarPartidas()">Gerar partidas</button>
         <p id="partidas"></p>
 
+        <h3>Ver classificados</h3>
+        <button onclick="classificados()">Classificação</button>
+        <p id="classificados"></p>
+
         <script>
             const URL_FETCH = 'https://estagio.geopostenergy.com/WorldCup/GetAllTeams';
 
             var teams = new Array();
             const groups = {A:[],B:[],C:[],D:[],E:[],F:[],G:[],H:[]};
+            
+            var classficadosGrupo = new Array();
             var criterios = new Array();
 
             fetch(URL_FETCH,{method: 'get',headers: new Headers({'git-user':'brunodf05'})})
@@ -42,8 +48,6 @@
                     a[count] = a[rand];
                     a[rand] = temp;
                 }
-                console.log("CONSOLE A",a);
-                
             }
 
             function chooseGroup(){
@@ -371,6 +375,71 @@
                 
             }
 
+            function classificados(){
+                
+                for(var key in groups){
+                    var aux = groups[key];
+                    var i=0;
+                    var first = {
+                        name : [],
+                        pontos: 0
+                    };
+                    var second = {
+                        name : [],
+                        pontos: 0
+                    };
+                    var tmp =[];
+                    while(i<4){
+                        if (first.name.length === 0){
+                            first.name = aux[i];
+                            let pnt = criterios.find(c => c.Name === aux[i]);
+                            first.pontos = pnt.Pontos;
+                        }
+                        else {
+                            let pnt1 = criterios.find(c => c.Name === first.name);
+                            let pnt2 = criterios.find(c => c.Name === aux[i]);
+                            if (pnt1.Pontos<pnt2.Pontos){
+                                second.name = first.name;
+                                second.pontos = pnt1.Pontos;
+                                first.name = aux[i];
+                                first.pontos = pnt2.Pontos;
+                            } else if (second.name.length === 0){
+                                second.name = aux[i];
+                                second.pontos = pnt2.Pontos;
+                            } else {
+                                pnt1 = criterios.find(c => c.Name === second.name);
+                                
+                                if (pnt1.Pontos<pnt2.Pontos){
+                                    second.name = aux[i];
+                                    second.pontos = pnt2.Pontos;
+                                }
+                            }
+                        }
+                        i++;
+                    }
+
+                    classficadosGrupo.push({
+                        [key] : {
+                            first,
+                            second 
+                        }
+                    });
+                }
+
+                let text = '<table border="1" style="width:100%"><tr><th></th><th>Classificados em primeiro</th><th>Classficados em segundo</th>';
+                for(var i=0;i<8;i++){
+                    let tmp = classficadosGrupo[i];
+                    for(var key in tmp){
+                        text+= '<tr><th>Grupo ' + key + '</th>';
+                        let aux = tmp[key];
+                        text+= '<td>'+aux.first.name+' '+aux.first.pontos+' Pontos</td><td>'+aux.second.name+' '+aux.second.pontos+' Pontos</td>';
+                    }
+                }
+                text+='</table>'
+                document.getElementById("classificados").innerHTML = text;
+                console.log("CLASSIFICADOS GRUPOS",classficadosGrupo);
+            }
+
             function gerarPartidas(){
                 for (var i=0; i<teams.length;i++){
                     criterios.push({
@@ -410,10 +479,12 @@
 
                 }
                 text+="</table>";
-                console.log("CRITERIOS",criterios);
+                console.log("CRITERIOS",criterios)
                 document.getElementById("partidas").innerHTML = text;
 
             }
+
+
         </script>        
     </body>
 </html>
