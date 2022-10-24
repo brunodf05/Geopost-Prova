@@ -382,36 +382,202 @@
                     var i=0;
                     var first = {
                         name : [],
-                        pontos: 0
+                        pontos: 0,
+                        saldo: 0
                     };
                     var second = {
                         name : [],
-                        pontos: 0
+                        pontos: 0,
+                        saldo: 0
                     };
                     var tmp =[];
                     while(i<4){
-                        if (first.name.length === 0){
+                        if (first.name.length === 0){ //checa se nao tem nada salvo
                             first.name = aux[i];
                             let pnt = criterios.find(c => c.Name === aux[i]);
                             first.pontos = pnt.Pontos;
+                            first.saldo = pnt.Saldo;
                         }
                         else {
                             let pnt1 = criterios.find(c => c.Name === first.name);
                             let pnt2 = criterios.find(c => c.Name === aux[i]);
-                            if (pnt1.Pontos<pnt2.Pontos){
+                            if (pnt1.Pontos<pnt2.Pontos){ // compara primeiro lugar com novo maior
                                 second.name = first.name;
                                 second.pontos = pnt1.Pontos;
+                                second.saldo = pnt1.Saldo;
                                 first.name = aux[i];
                                 first.pontos = pnt2.Pontos;
-                            } else if (second.name.length === 0){
+                                first.saldo = pnt2.Saldo;
+                            } else if (pnt1.Pontos == pnt2.Pontos) { //comparar mesma qnt de pontos
+                                if (pnt1.Saldo == pnt2.Saldo){ //checa se mesmo saldo
+                                    var n_boolean = Math.random() < 0.5;
+                                    if (n_boolean){ //primeiro permanece , novo vai para segundo
+                                        if (second.name.length === 0){ //checa segundo vazio
+                                        second.name = aux[i];
+                                        second.pontos = pnt2.Pontos;
+                                        second.saldo = pnt2.Saldo;
+                                        } else { // segundo nao vazio
+                                            pnt1 = criterios.find(c => c.Name === second.name);
+                                            
+                                            if (pnt1.Pontos<pnt2.Pontos){ //compara pontos segundo com novo maior
+                                                second.name = aux[i];
+                                                second.pontos = pnt2.Pontos;
+                                                second.saldo = pnt2.Saldo;
+                                            } else if (pnt1.Pontos == pnt2.Pontos){ // checa pontos iguais
+                                                if (pnt1.Saldo<pnt2.Saldo){ //confere saldo novo maior
+                                                    second.name = aux[i];
+                                                    second.pontos = pnt2.Pontos;
+                                                    second.saldo = pnt2.Saldo;
+                                                } 
+                                                else if(pnt1.Saldo == pnt2.Saldo){ //se mesmo saldo ,random
+                                                    n_boolean = Math.random() < 0.5;
+                                                    if (!n_boolean){// se segundo escolhido substitui
+                                                        second.name = aux[i];
+                                                        second.pontos = pnt2.Pontos;
+                                                        second.saldo = pnt2.Saldo;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    } else { // novo vira primeiro, primeiro vai pra segundo
+                                        if (second.name.length === 0){ //se segundo vazio
+                                            second.name = first.name;
+                                            second.pontos = first.pontos;
+                                            second.saldo = first.saldo;
+                                            first.name = aux[i];
+                                            first.pontos = pnt2.Pontos;
+                                            first.saldo = pnt2.Saldo;
+                                        } else { //segundo nao vazio
+                                            let pnt3 = criterios.find(c => c.Name === second.name);
+                                            
+                                            if (pnt3.Pontos<pnt1.Pontos){//primeiro com mais pontos q segundo
+                                                second.name = first.name;
+                                                second.pontos = first.pontos;
+                                                second.saldo = first.saldo;
+                                                first.name = aux[i];
+                                                first.pontos = pnt2.Pontos;
+                                                first.saldo = pnt2.Saldo;
+                                            } else if (pnt3.Pontos==pnt1.Pontos){//primeiro e segundo pontos iguais
+                                                if (pnt3.Saldo==pnt1.Saldo){//com mesmo saldo
+                                                    n_boolean = Math.random() < 0.5;
+                                                    if (!n_boolean){//primeiro vira segundo
+                                                    second.name = first.name;
+                                                    second.pontos = first.pontos;
+                                                    second.saldo = first.saldo;
+                                                    first.name = aux[i];
+                                                    first.pontos = pnt2.Pontos;
+                                                    first.saldo = pnt2.Saldo;
+                                                    }
+                                                } else if (pnt3.Saldo<pnt1.Saldo){//primeiro com saldo maior
+                                                    second.name = first.name;
+                                                    second.pontos = first.pontos;
+                                                    second.saldo = first.saldo;
+                                                    first.name = aux[i];
+                                                    first.pontos = pnt2.Pontos;
+                                                    first.saldo = pnt2.Saldo;
+                                                }
+                                            }
+                                        }
+                                    }
+                                } 
+                                else if (pnt1.Saldo < pnt2.Saldo){ //saldo novo maior
+                                    if (second.name.length === 0){ //segundo vazio
+                                        second.name = first.name;
+                                        second.pontos = first.pontos;
+                                        second.saldo = first.saldo;
+                                        first.name = aux[i];
+                                        first.pontos = pnt2.Pontos;
+                                        first.saldo = pnt2.Saldo;
+                                    } else {//segundo nao vazio
+                                        let pnt3 = criterios.find(c => c.Name === second.name);
+                                        
+                                        if (pnt3.Pontos<pnt1.Pontos){//segundo com menos pontos
+                                            second.name = first.name;
+                                            second.pontos = first.pontos;
+                                            second.saldo = first.saldo;
+                                            first.name = aux[i];
+                                            first.pontos = pnt2.Pontos;
+                                            first.saldo = pnt2.Saldo;
+                                        } else if (pnt3.Pontos==pnt1.Pontos){//mesmo ponto
+                                            if (pnt3.Saldo==pnt1.Saldo){//saldo igual
+                                                var n_boolean = Math.random() < 0.5;
+                                                if (!n_boolean){
+                                                    second.name = first.name;
+                                                    second.pontos = first.pontos;
+                                                    second.saldo = first.saldo;
+                                                    first.name = aux[i];
+                                                    first.pontos = pnt2.Pontos;
+                                                    first.saldo = pnt2.Saldo;
+                                                } else {
+                                                    first.name = aux[i];
+                                                    first.pontos = pnt2.Pontos;
+                                                    first.saldo = pnt2.Saldo;
+                                                }
+                                            }
+                                            else {//saldo primeiro maior
+                                                second.name = first.name;
+                                                second.pontos = first.pontos;
+                                                second.saldo = first.saldo;
+                                                first.name = aux[i];
+                                                first.pontos = pnt2.Pontos;
+                                                first.saldo = pnt2.Saldo;
+                                            }
+                                        }
+                                    }
+                                } else { //primeiro permanece , novo vai para segundo
+                                    if (second.name.length === 0){ //checa segundo vazio
+                                    second.name = aux[i];
+                                    second.pontos = pnt2.Pontos;
+                                    second.saldo = pnt2.Saldo;
+                                    } else { // segundo nao vazio
+                                        pnt1 = criterios.find(c => c.Name === second.name);
+                                        
+                                        if (pnt1.Pontos<pnt2.Pontos){ //compara pontos segundo com novo maior
+                                            second.name = aux[i];
+                                            second.pontos = pnt2.Pontos;
+                                            second.saldo = pnt2.Saldo;
+                                        } else if (pnt1.Pontos == pnt2.Pontos){ // checa pontos iguais
+                                            if (pnt1.Saldo<pnt2.Saldo){ //confere saldo novo maior
+                                                second.name = aux[i];
+                                                second.pontos = pnt2.Pontos;
+                                                second.saldo = pnt2.Saldo;
+                                            } 
+                                            else if(pnt1.Saldo == pnt2.Saldo){ //se mesmo saldo ,random
+                                                n_boolean = Math.random() < 0.5;
+                                                if (!n_boolean){// se segundo escolhido substitui
+                                                    second.name = aux[i];
+                                                    second.pontos = pnt2.Pontos;
+                                                    second.saldo = pnt2.Saldo;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else if (second.name.length === 0){//novo vai para segundo vazio
                                 second.name = aux[i];
                                 second.pontos = pnt2.Pontos;
-                            } else {
+                                second.saldo = pnt2.Saldo;
+                            } else {//segundo nao vazio
                                 pnt1 = criterios.find(c => c.Name === second.name);
                                 
                                 if (pnt1.Pontos<pnt2.Pontos){
                                     second.name = aux[i];
                                     second.pontos = pnt2.Pontos;
+                                    second.saldo = pnt2.Saldo;
+                                } else if (pnt1.Pontos == pnt2.Pontos){
+                                    if (pnt1.Saldo == pnt2.Saldo){
+                                        var n_boolean = Math.random() < 0.5;
+                                        if (!n_boolean){
+                                        second.name = aux[i];
+                                        second.pontos = pnt2.Pontos;
+                                        second.saldo = pnt2.Saldo;
+                                        }
+                                    } else if (pnt1.Saldo < pnt2.Saldo){
+                                        second.name = aux[i];
+                                        second.pontos = pnt2.Pontos;
+                                        second.saldo = pnt2.Saldo;
+                                    }
                                 }
                             }
                         }
