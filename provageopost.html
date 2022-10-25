@@ -38,6 +38,7 @@
             <p id="quartas"></p>
             <p id="semifinais"></p>
             <p id="final"></p>
+            <p id="vencedor"></p>
         </div>
         
         <script>
@@ -834,7 +835,7 @@
                 }
                 
                 q1 = Math.floor(Math.random()*4); q2 = Math.floor(Math.random()*4);
-                text+="<td>"+vencedores[6]+" "+q1+" x "+q2+" "+vencedores[7]+"</td>";
+                text+="<td>"+vencedores[6]+" "+q1+" x "+q2+" "+vencedores[7]+"</td></tr>";
                 if (q1==q2){
                     var n_boolean = Math.random() < 0.5;
                     if (n_boolean){ aux.push(vencedores[6]);}
@@ -870,7 +871,7 @@
                 }    
                 
                 g1 = Math.floor(Math.random()*4); g2 = Math.floor(Math.random()*4);
-                text+="<td>"+vencedores[2]+" "+g1+" x "+g2+" "+vencedores[3]+"</td>";
+                text+="<td>"+vencedores[2]+" "+g1+" x "+g2+" "+vencedores[3]+"</td></tr>";
                 if (g1==g2){
                     var n_boolean = Math.random() < 0.5;
                     if (n_boolean){ aux.push(vencedores[2]);}
@@ -902,7 +903,7 @@
                 
                 g1 = Math.floor(Math.random()*4); g2 = Math.floor(Math.random()*4);
                 
-                text+="<td>"+vencedores[0]+" "+g1+" x "+g2+" "+vencedores[1]+"</td>";
+                text+="<td>"+vencedores[0]+" "+g1+" x "+g2+" "+vencedores[1]+"</td></tr>";
                 data.equipeA = vencedores[0];
                 data.equipeB = vencedores[1];
                 data.golsEquipeA = g1;
@@ -933,6 +934,10 @@
                 vencedores = quartas();
                 vencedores = semifinal();
                 final = partidaFinal();
+
+                let text = "<table border='1' style='width:100%' class='centerTable'><tr><th colspan='2'>Vencedor</th>";
+                text+="<td>"+final[0]+"</td></tr></table>";
+                document.getElementById("vencedor").innerHTML = text;
                 document.getElementById("torneioButton").disabled = true;
                 
             }
