@@ -2,26 +2,51 @@
 <html>
     <head>
         <title>Geopost Energy Prova</title>
+        <style>
+            .center {
+                text-align: center;
+            }
+            .centerTable {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        </style>
     </head>
     <body>
-        <h1>Gerar os grupos</h1>
+        <h2 style="text-align: center;">Gerar os grupos</h2>
+        <div class="center">
+            <button id="groupButton" onclick="chooseGroup()" >Gerar grupos</button>
+            <p id="grupos"></p>
+        </div>
+        
+        <h2 style="text-align: center;">Gerar as partidas</h2>
+        <div class="center">
+            <button id="partidaButton" onclick="gerarPartidas()">Gerar partidas</button>
+            <p id="partidas"></p>
+        </div>
 
-        <button onclick="chooseGroup()">Gerar grupos</button>
+        <h2 style="text-align: center;">Ver classificados</h2>
+        <div class="center">
+            <button id="classificadosButton" onclick="classificados()">Classificação</button>
+            <p id="classificados"></p>
+        </div>
 
-        <p id="grupos"></p>
-
-        <h2>Gerar as partidas</h2>
-        <button onclick="gerarPartidas()">Gerar partidas</button>
-        <p id="partidas"></p>
-
-        <h3>Ver classificados</h3>
-        <button onclick="classificados()">Classificação</button>
-        <p id="classificados"></p>
-
+        <h2 style="text-align: center;">Gerar Torneio</h2>
+        <div class="center">
+            <button id="torneioButton" onclick="torneio()">Torneio</button>
+            <p id="oitavas"></p>
+            <p id="quartas"></p>
+            <p id="semifinais"></p>
+            <p id="final"></p>
+        </div>
+        
         <script>
             const URL_FETCH = 'https://estagio.geopostenergy.com/WorldCup/GetAllTeams';
 
             var teams = new Array();
+            var vencedores = new Array();
+            var final = new Array();
+
             const groups = {A:[],B:[],C:[],D:[],E:[],F:[],G:[],H:[]};
             
             var classficadosGrupo = new Array();
@@ -30,11 +55,11 @@
             fetch(URL_FETCH,{method: 'get',headers: new Headers({'git-user':'brunodf05'})})
             .then(function(response){
                 response.json().then(function(data){
-                    console.log(data);
+                    console.log("JSON",data);
                     for (var key in data.Result){
                         teams.push(data.Result[key]);
                     }
-                    console.log(teams);
+                    console.log("TIMES",teams);
                 })
             });
 
@@ -48,6 +73,7 @@
                     a[count] = a[rand];
                     a[rand] = temp;
                 }
+                
             }
 
             function chooseGroup(){
@@ -64,8 +90,8 @@
                     y=0;
                 }
                 
-                let text = "<table border='1'><tr><th>Grupo A</th><th>Grupo B</th><th>Grupo C</th><th>Grupo D</th><th>Grupo E</th><th>Grupo F</th><th>Grupo G</th><th>Grupo H</th></tr>";
-                console.log(groups);
+                let text = "<table border='1' class='centerTable'><tr><th>Grupo A</th><th>Grupo B</th><th>Grupo C</th><th>Grupo D</th><th>Grupo E</th><th>Grupo F</th><th>Grupo G</th><th>Grupo H</th></tr>";
+                
                 let count = 0;
                 let init = groups;
 
@@ -88,6 +114,7 @@
                 
                 text+="</table>";
                 document.getElementById("grupos").innerHTML = text;
+                document.getElementById("groupButton").disabled = true;
             }
 
             function fillCriterios(aux,x1,x2,x3,x4,y1,y2,y3,y4,z1,z2,z3,z4){
@@ -592,7 +619,7 @@
                     });
                 }
 
-                let text = '<table border="1" style="width:100%"><tr><th></th><th>Classificados em primeiro</th><th>Classficados em segundo</th>';
+                let text = '<table border="1" style="width:100%" class="centerTable"><tr><th></th><th>Classificados em primeiro</th><th>Classificados em segundo</th>';
                 for(var i=0;i<8;i++){
                     let tmp = classficadosGrupo[i];
                     for(var key in tmp){
@@ -603,7 +630,8 @@
                 }
                 text+='</table>'
                 document.getElementById("classificados").innerHTML = text;
-                console.log("CLASSIFICADOS GRUPOS",classficadosGrupo);
+                document.getElementById("classificadosButton").disabled = true;
+                
             }
 
             function gerarPartidas(){
@@ -615,7 +643,7 @@
                     });
                 }
                
-                let text = '<table border="1" style="width:100%"><tr><th></th><th>Rodada 1 - Jogo 1</th><th>Rodada 1 - Jogo 2</th><th>Rodada 2 - Jogo 1</th><th>Rodada 2 - Jogo 2</th><th>Rodada 3 - Jogo 1</th><th>Rodada 3 - Jogo 2</th>';
+                let text = '<table border="1" style="width:100%" class="centerTable"><tr><th></th><th>Rodada 1 - Jogo 1</th><th>Rodada 1 - Jogo 2</th><th>Rodada 2 - Jogo 1</th><th>Rodada 2 - Jogo 2</th><th>Rodada 3 - Jogo 1</th><th>Rodada 3 - Jogo 2</th>';
                 for(var key in groups){
                     text += '<tr><th>Partidas Grupo '+key+"</th>";
                     let x1=Math.floor(Math.random()*4),
@@ -629,15 +657,15 @@
                     z1=Math.floor(Math.random()*4),
                     z2=Math.floor(Math.random()*4),
                     z3=Math.floor(Math.random()*4),
-                    z4=Math.floor(Math.random()*4);
-
+                    z4=Math.floor(Math.random()*4);// numero de gols aleatorio entre 0-4
+                    
                     let aux = groups[key];
                     text+="<td>"+aux[0]+" "+x1+" x "+x2+" "+aux[1]+"</td>";
                     text+="<td>"+aux[2]+" "+x3+" x "+x4+" "+aux[3]+"</td>";
                     text+="<td>"+aux[0]+" "+y1+" x "+y2+" "+aux[2]+"</td>";
                     text+="<td>"+aux[1]+" "+y3+" x "+y4+" "+aux[3]+"</td>";
                     text+="<td>"+aux[0]+" "+z1+" x "+z2+" "+aux[3]+"</td>";
-                    text+="<td>"+aux[1]+" "+z3+" x "+z4+" "+aux[2]+"</td>";
+                    text+="<td>"+aux[1]+" "+z3+" x "+z4+" "+aux[2]+"</td></tr>";
 
                     fillCriterios(aux,x1,x2,x3,x4,y1,y2,y3,y4,z1,z2,z3,z4)
                     
@@ -645,12 +673,269 @@
 
                 }
                 text+="</table>";
-                console.log("CRITERIOS",criterios)
                 document.getElementById("partidas").innerHTML = text;
+                document.getElementById("partidaButton").disabled = true;
 
             }
 
+            function oitavas(){
+                var aux = new Array();
+                let g1 = 0;
+                let g2 = 0;
+                let text = "<table border='1' style='width:100%' class='centerTable'><tr><th colspan='2'>Oitavas de finais</th>";
+                
+                g1 = Math.floor(Math.random()*4); 
+                g2 = Math.floor(Math.random()*4);
+                text+="<td>"+classficadosGrupo[0].A.first.name+" "+g1+" x "+g2+" "+classficadosGrupo[1].B.second.name+"</td>";
+                
+                if (g1==g2){
+                    var n_boolean = Math.random() < 0.5;
+                    if (n_boolean){ aux.push(classficadosGrupo[0].A.first.name);}
+                    else {aux.push(classficadosGrupo[1].B.second.name);}
+                } else if(g1<g2){
+                    aux.push(classficadosGrupo[1].B.second.name);
+                } else {
+                    aux.push(classficadosGrupo[0].A.first.name);
+                }    
+                
+                g1 = Math.floor(Math.random()*4); g2 = Math.floor(Math.random()*4);
+                
+                text+="<td>"+classficadosGrupo[2].C.first.name+" "+g1+" x "+g2+" "+classficadosGrupo[3].D.second.name+"</td>";
+                if (g1==g2){
+                    var n_boolean = Math.random() < 0.5;
+                    if (n_boolean){ aux.push(classficadosGrupo[2].C.first.name);}
+                    else {aux.push(classficadosGrupo[3].D.second.name);}
+                } else if(g1<g2){
+                    aux.push(classficadosGrupo[3].D.second.name);
+                } else {
+                    aux.push(classficadosGrupo[2].C.first.name);
+                }
 
+                g1 = Math.floor(Math.random()*4); g2 = Math.floor(Math.random()*4);
+                text+="<td>"+classficadosGrupo[4].E.first.name+" "+g1+" x "+g2+" "+classficadosGrupo[5].F.second.name+"</td>";
+                if (g1==g2){
+                    var n_boolean = Math.random() < 0.5;
+                    if (n_boolean){ aux.push(classficadosGrupo[4].E.first.name);}
+                    else {aux.push(classficadosGrupo[5].F.second.name);}
+                } else if(g1<g2){
+                    aux.push(classficadosGrupo[5].F.second.name);
+                } else {
+                    aux.push(classficadosGrupo[4].E.first.name);
+                }
+                
+                g1 = Math.floor(Math.random()*4); g2 = Math.floor(Math.random()*4);
+                text+="<td>"+classficadosGrupo[6].G.first.name+" "+g1+" x "+g2+" "+classficadosGrupo[7].H.second.name+"</td>";
+                if (g1==g2){
+                    var n_boolean = Math.random() < 0.5;
+                    if (n_boolean){ aux.push(classficadosGrupo[6].G.first.name);}
+                    else {aux.push(classficadosGrupo[7].H.second.name);}
+                } else if(g1<g2){
+                    aux.push(classficadosGrupo[7].H.second.name);
+                } else {
+                    aux.push(classficadosGrupo[6].G.first.name);
+                }
+
+                g1 = Math.floor(Math.random()*4); g2 = Math.floor(Math.random()*4);
+                text+="<td>"+classficadosGrupo[1].B.first.name+" "+g1+" x "+g2+" "+classficadosGrupo[0].A.second.name+"</td>";
+                if (g1==g2){
+                    var n_boolean = Math.random() < 0.5;
+                    if (n_boolean){ aux.push(classficadosGrupo[1].B.first.name);}
+                    else {aux.push(classficadosGrupo[0].A.second.name);}
+                } else if(g1<g2){
+                    aux.push(classficadosGrupo[0].A.second.name);
+                } else {
+                    aux.push(classficadosGrupo[1].B.first.name);
+                }
+
+                g1 = Math.floor(Math.random()*4); g2 = Math.floor(Math.random()*4);
+                text+="<td>"+classficadosGrupo[3].D.first.name+" "+g1+" x "+g2+" "+classficadosGrupo[2].C.second.name+"</td>";
+                if (g1==g2){
+                    var n_boolean = Math.random() < 0.5;
+                    if (n_boolean){ aux.push(classficadosGrupo[3].D.first.name);}
+                    else {aux.push(classficadosGrupo[2].C.second.name);}
+                } else if(g1<g2){
+                    aux.push(classficadosGrupo[2].C.second.name);
+                } else {
+                    aux.push(classficadosGrupo[3].D.first.name);
+                }
+
+                g1 = Math.floor(Math.random()*4); g2 = Math.floor(Math.random()*4);
+                text+="<td>"+classficadosGrupo[5].F.first.name+" "+g1+" x "+g2+" "+classficadosGrupo[4].E.second.name+"</td>";
+                if (g1==g2){
+                    var n_boolean = Math.random() < 0.5;
+                    if (n_boolean){ aux.push(classficadosGrupo[5].F.first.name);}
+                    else {aux.push(classficadosGrupo[4].E.second.name);}
+                } else if(g1<g2){
+                    aux.push(classficadosGrupo[4].E.second.name);
+                } else {
+                    aux.push(classficadosGrupo[5].F.first.name);
+                }
+
+                g1 = Math.floor(Math.random()*4); g2 = Math.floor(Math.random()*4);
+                text+="<td>"+classficadosGrupo[7].H.first.name+" "+g1+" x "+g2+" "+classficadosGrupo[6].G.second.name+"</td></tr>";
+                if (g1==g2){
+                    var n_boolean = Math.random() < 0.5;
+                    if (n_boolean){ aux.push(classficadosGrupo[7].H.first.name);}
+                    else {aux.push(classficadosGrupo[6].G.second.name);}
+                } else if(g1<g2){
+                    aux.push(classficadosGrupo[6].G.second.name);
+                } else {
+                    aux.push(classficadosGrupo[7].H.first.name);
+                }
+
+                text+="</table>";
+                document.getElementById("oitavas").innerHTML = text;
+                
+                console.log("vencedores",aux);
+                return aux;
+            }
+
+            function quartas(){
+                var aux = new Array();
+                let q1 = 0;
+                let q2 = 0;
+                let text = "<table border='1' style='width:100%' class='centerTable'><tr><th colspan='2'>Quartas de finais</th>";
+                
+                q1 = Math.floor(Math.random()*4); q2 = Math.floor(Math.random()*4);
+                
+                text+="<td>"+vencedores[0]+" "+q1+" x "+q2+" "+vencedores[1]+"</td>";
+                if (q1==q2){
+                    var n_boolean = Math.random() < 0.5;
+                    if (n_boolean){ aux.push(vencedores[0]);}
+                    else {aux.push(vencedores[1]);}
+                } else if(q1<q2){
+                    aux.push(vencedores[1]);
+                } else {
+                    aux.push(vencedores[0]);
+                }    
+                
+                q1 = Math.floor(Math.random()*4); q2 = Math.floor(Math.random()*4);
+                text+="<td>"+vencedores[2]+" "+q1+" x "+q2+" "+vencedores[3]+"</td>";
+                if (q1==q2){
+                    var n_boolean = Math.random() < 0.5;
+                    if (n_boolean){ aux.push(vencedores[2]);}
+                    else {aux.push(vencedores[3]);}
+                } else if(q1<q2){
+                    aux.push(vencedores[3]);
+                } else {
+                    aux.push(vencedores[2]);
+                }
+
+                q1 = Math.floor(Math.random()*4); q2 = Math.floor(Math.random()*4);
+                text+="<td>"+vencedores[4]+" "+q1+" x "+q2+" "+vencedores[5]+"</td>";
+                if (q1==q2){
+                    var n_boolean = Math.random() < 0.5;
+                    if (n_boolean){ aux.push(vencedores[4]);}
+                    else {aux.push(vencedores[5]);}
+                } else if(q1<q2){
+                    aux.push(vencedores[5]);
+                } else {
+                    aux.push(vencedores[4]);
+                }
+                
+                q1 = Math.floor(Math.random()*4); q2 = Math.floor(Math.random()*4);
+                text+="<td>"+vencedores[6]+" "+q1+" x "+q2+" "+vencedores[7]+"</td>";
+                if (q1==q2){
+                    var n_boolean = Math.random() < 0.5;
+                    if (n_boolean){ aux.push(vencedores[6]);}
+                    else {aux.push(vencedores[7]);}
+                } else if(q1<q2){
+                    aux.push(vencedores[7]);
+                } else {
+                    aux.push(vencedores[6]);
+                }
+
+                text+="</table>";
+                document.getElementById("quartas").innerHTML = text;
+                return aux;
+            }
+
+            function semifinal(){
+                var aux = new Array();
+                let g1 = 0;
+                let g2 = 0;
+                let text = "<table border='1' style='width:100%' class='centerTable'><tr><th colspan='2'>Semifinais</th>";
+                
+                g1 = Math.floor(Math.random()*4); g2 = Math.floor(Math.random()*4);
+                
+                text+="<td>"+vencedores[0]+" "+g1+" x "+g2+" "+vencedores[1]+"</td>";
+                if (g1==g2){
+                    var n_boolean = Math.random() < 0.5;
+                    if (n_boolean){ aux.push(vencedores[0]);}
+                    else {aux.push(vencedores[1]);}
+                } else if(g1<g2){
+                    aux.push(vencedores[1]);
+                } else {
+                    aux.push(vencedores[0]);
+                }    
+                
+                g1 = Math.floor(Math.random()*4); g2 = Math.floor(Math.random()*4);
+                text+="<td>"+vencedores[2]+" "+g1+" x "+g2+" "+vencedores[3]+"</td>";
+                if (g1==g2){
+                    var n_boolean = Math.random() < 0.5;
+                    if (n_boolean){ aux.push(vencedores[2]);}
+                    else {aux.push(vencedores[3]);}
+                } else if(g1<g2){
+                    aux.push(vencedores[3]);
+                } else {
+                    aux.push(vencedores[2]);
+                }
+
+                text+="</table>";
+                document.getElementById("semifinais").innerHTML = text;
+                return aux;
+            }
+
+            function partidaFinal(){
+                var aux = new Array();
+                const data = {
+                    "equipeA":"",
+                    "equipeB":"",
+                    "golsEquipeA":0,
+                    "golsEquipeB":0,
+                    "golsPenaltyTimeA":0,
+                    "golsPenaltyTimeB":0
+                };
+                let g1 = 0;
+                let g2 = 0;
+                let text = "<table border='1' style='width:100%' class='centerTable'><tr><th colspan='2'>Final</th>";
+                
+                g1 = Math.floor(Math.random()*4); g2 = Math.floor(Math.random()*4);
+                
+                text+="<td>"+vencedores[0]+" "+g1+" x "+g2+" "+vencedores[1]+"</td>";
+                data.equipeA = vencedores[0];
+                data.equipeB = vencedores[1];
+                data.golsEquipeA = g1;
+                data.golsEquipeB = g2;
+
+                if (g1==g2){
+                    var n_boolean = Math.random() < 0.5;
+                    if (n_boolean){ aux.push(vencedores[0]);}
+                    else {aux.push(vencedores[1]);}
+                } else if(g1<g2){
+                    aux.push(vencedores[1]);
+                } else {
+                    aux.push(vencedores[0]);
+                }    
+                
+                text+="</table>";
+                document.getElementById("final").innerHTML = text;
+
+                fetch('https://estagio.geopostenergy.com/WorldCup/InsertFinalResult',{method: "POST",headers: new Headers({'git-user':'brunodf05'}),body: JSON.stringify(data)})
+                .then(res => {
+                    console.log("Request completo, response: ",res);
+                });
+                return aux;
+            }
+
+            function torneio(){
+                vencedores = oitavas();
+                vencedores = quartas();
+                vencedores = semifinal();
+                final = partidaFinal();
+                document.getElementById("torneioButton").disabled = true;
+                
+            }
         </script>        
     </body>
 </html>
